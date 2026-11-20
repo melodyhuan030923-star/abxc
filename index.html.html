@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="流感與呼吸道感染的預防－可回饋式衛教網頁，包含衛教目標、預防方法、就醫時機與互動測驗。">
+<meta name="theme-color" content="#173042">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="衛教小幫手">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>流感與呼吸道感染的預防｜可回饋式衛教</title>
+<style>
+  :root{
+    --ink:#173042;
+    --ink-soft:#385466;
+    --muted:#6b8192;
+    --gold:#ba9c66;
+    --gold-dark:#8f7138;
+    --gold-pale:#f2e8d5;
+    --teal:#0f6f70;
+    --teal-dark:#0b5455;
+    --bg:#f7f6f2;
+    --white:#ffffff;
+    --line:#e4e6e2;
+    --danger:#bd4a43;
+    --danger-bg:#fdf1ef;
+    --ok:#2c8a6e;
+    --ok-bg:#eef7f3;
+    --shadow:0 18px 48px rgba(23,48,66,.09);
+    --radius:22px;
+    --max:1120px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;cursor:pointer}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+  .wrap{width:min(calc(100% - 40px),var(--max));margin-inline:auto}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* ---------- icon sprite ---------- */
+  .icon{width:28px;height:28px;display:block;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* ---------- header ---------- */
+  .site-header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,246,242,.88);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(23,48,66,.07);
+  }
+  .header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:72px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.02em}
+  .brand-mark{
+    width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+    background:var(--teal);color:#fff;box-shadow:0 6px 14px rgba(15,111,112,.24)
+  }
+  .brand-mark .icon{width:21px;height:21px}
+  .brand small{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.14em;line-height:1.2}
+  .nav{display:flex;align-items:center;gap:6px}
+  .nav a{padding:8px 14px;border-radius:999px;font-size:14px;color:var(--ink-soft);transition:.2s}
+  .nav a:hover{background:var(--gold-pale);color:var(--gold-dark)}
+  .nav .nav-cta{background:var(--ink);color:#fff;padding:9px 18px}
+  .nav .nav-cta:hover{background:var(--teal);color:#fff}
+  .menu-btn{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);align-items:center;justify-content:center}
+  .menu-btn .icon{width:20px;height:20px}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;color:#fff;
+    background:radial-gradient(circle at 78% 22%,rgba(186,156,102,.26),transparent 34%),
+               linear-gradient(135deg,#10313f 0%,#173042 48%,#123c47 100%);
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.13;
+    background-image:radial-gradient(rgba(255,255,255,.7) 1px,transparent 1px);
+    background-size:26px 26px;
+    mask-image:linear-gradient(90deg,transparent,#000 60%);
+  }
+  .hero::after{
+    content:"";position:absolute;width:520px;height:520px;right:-170px;bottom:-300px;
+    border:1px solid rgba(186,156,102,.28);border-radius:50%;
+  }
+  .hero-inner{
+    position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;
+    align-items:center;padding:clamp(64px,9vw,120px) 0 clamp(72px,10vw,130px);
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:7px 16px;border:1px solid rgba(186,156,102,.55);border-radius:999px;
+    color:#e8d4ac;font-size:12px;letter-spacing:.18em;font-weight:600;
+  }
+  .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .hero h1{
+    margin:24px 0 18px;font-size:clamp(38px,5.6vw,68px);line-height:1.16;
+    letter-spacing:-.02em;font-weight:800;
+  }
+  .hero h1 span{color:#e6c98f;display:block;font-size:.55em;letter-spacing:.08em;font-weight:500;margin-bottom:10px}
+  .hero-lead{max-width:560px;color:#cbd9df;font-size:clamp(15px,1.5vw,18px);margin:0 0 28px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    padding:13px 24px;border-radius:12px;border:1px solid transparent;
+    font-weight:700;font-size:15px;transition:transform .2s,box-shadow .2s,background .2s;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn .icon{width:18px;height:18px}
+  .btn-gold{background:var(--gold);color:#1b2a33;box-shadow:0 10px 24px rgba(186,156,102,.28)}
+  .btn-gold:hover{background:#c9ac78}
+  .btn-ghost{border-color:rgba(255,255,255,.35);color:#fff;background:rgba(255,255,255,.05)}
+  .btn-ghost:hover{background:rgba(255,255,255,.13)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{background:var(--teal)}
+  .btn-outline{border-color:var(--line);background:#fff;color:var(--ink)}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold-dark)}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13px;color:#a9bec8}
+  .hero-meta b{color:#e7eef1;font-weight:600}
+  .hero-visual{position:relative;display:grid;gap:14px}
+  .visual-card{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+    border-radius:20px;padding:20px 22px;backdrop-filter:blur(6px);
+    display:flex;align-items:center;gap:16px;
+  }
+  .visual-card .vis-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:rgba(230,201,143,.16);color:#e8c98d;flex:none}
+  .visual-card .vis-icon .icon{width:24px;height:24px}
+  .visual-card strong{display:block;font-size:16px}
+  .visual-card small{color:#bfd0d7;font-size:12px}
+  .visual-card.offset{margin-left:44px}
+  .visual-card.offset2{margin-left:14px}
+  .floating-pill{
+    position:absolute;left:-18px;top:-34px;background:#fff;color:var(--ink);
+    padding:10px 16px;border-radius:999px;font-size:12px;font-weight:700;
+    box-shadow:0 12px 30px rgba(0,0,0,.18);transform:rotate(-4deg);
+  }
+  .floating-pill span{color:var(--gold-dark)}
+
+  /* ---------- general sections ---------- */
+  section{padding:clamp(70px,9vw,110px) 0}
+  .section-head{max-width:720px;margin-bottom:40px}
+  .kicker{
+    display:inline-flex;align-items:center;gap:10px;color:var(--gold-dark);
+    font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;
+  }
+  .kicker::after{content:"";height:1px;width:42px;background:var(--gold)}
+  .section-head h2{margin:0 0 12px;font-size:clamp(28px,3.6vw,42px);line-height:1.25;letter-spacing:-.01em}
+  .section-head p{margin:0;color:var(--muted);font-size:16px}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- goals ---------- */
+  .goals{background:var(--white)}
+  .goal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .goal-card{
+    position:relative;padding:28px 24px 26px;border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(180deg,#fff,#fcfbf8);transition:.25s;overflow:hidden;
+  }
+  .goal-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:#d6c49c}
+  .goal-num{font-size:44px;font-weight:800;line-height:1;color:var(--gold-pale);letter-spacing:-.04em}
+  .goal-card h3{font-size:17px;margin:12px 0 8px}
+  .goal-card p{margin:0;color:var(--muted);font-size:14px}
+  .goal-card::after{content:"";position:absolute;left:0;top:0;width:4px;height:100%;background:var(--gold);opacity:0;transition:.25s}
+  .goal-card:hover::after{opacity:1}
+
+  /* ---------- flu intro ---------- */
+  .flu-grid{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:start}
+  .flu-text p{margin:0 0 18px;color:var(--ink-soft);font-size:16px}
+  .flu-text strong{color:var(--teal-dark)}
+  .callout{
+    border-left:4px solid var(--gold);background:var(--gold-pale);
+    padding:18px 20px;border-radius:0 14px 14px 0;font-size:15px;color:#5c4d31;
+  }
+  .symptom-panel{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px;box-shadow:var(--shadow);
+  }
+  .symptom-panel h3{margin:0 0 6px;font-size:19px}
+  .symptom-panel .sub{margin:0 0 22px;color:var(--muted);font-size:13px}
+  .symptom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .symptom{
+    background:var(--bg);border:1px solid var(--line);border-radius:13px;
+    padding:14px 8px;text-align:center;font-size:13px;font-weight:600;color:var(--ink-soft);transition:.2s;
+  }
+  .symptom:hover{background:var(--gold-pale);border-color:var(--gold);color:var(--gold-dark);transform:translateY(-2px)}
+  .symptom .icon{width:22px;height:22px;margin:0 auto 7px;color:var(--gold-dark)}
+
+  /* ---------- prevention ---------- */
+  .prevention{background:var(--white)}
+  .prev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .prev-card{
+    border:1px solid var(--line);border-radius:var(--radius);padding:26px;
+    background:#fff;transition:.25s;display:flex;flex-direction:column;gap:12px;
+  }
+  .prev-card:hover{box-shadow:var(--shadow);transform:translateY(-4px);border-color:#d7c69f}
+  .prev-top{display:flex;align-items:center;justify-content:space-between}
+  .prev-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--teal);color:#fff}
+  .prev-icon .icon{width:26px;height:26px}
+  .prev-index{font-size:13px;font-weight:700;color:var(--gold-dark);letter-spacing:.1em}
+  .prev-card h3{margin:0;font-size:19px}
+  .prev-card p{margin:0;color:var(--ink-soft);font-size:14px;flex:1}
+  .tag{
+    align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;
+    color:var(--teal-dark);background:#eaf3f2;padding:4px 10px;border-radius:999px;
+  }
+
+  /* ---------- timer ---------- */
+  .timer{
+    margin-top:28px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+    border:1px dashed var(--gold);border-radius:var(--radius);padding:22px 26px;
+    background:linear-gradient(120deg,#fffdf8,#f8f3e9);
+  }
+  .timer-ring{
+    --p:0;position:relative;width:74px;height:74px;border-radius:50%;flex:none;
+    background:conic-gradient(var(--gold) calc(var(--p)*1%),#e8e2d5 0);
+    display:grid;place-items:center;
+  }
+  .timer-ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:#fffdf8}
+  .timer-ring span{position:relative;font-weight:800;font-size:22px;color:var(--gold-dark)}
+  .timer-copy{flex:1;min-width:220px}
+  .timer-copy h3{margin:0 0 2px;font-size:17px}
+  .timer-copy p{margin:0;color:var(--muted);font-size:13px}
+
+  /* ---------- when to see doctor ---------- */
+  .urgent{background:linear-gradient(135deg,#fdf3f1,#fbf8f4)}
+  .urgent-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
+  .urgent-badge{
+    width:78px;height:78px;border-radius:24px;display:grid;place-items:center;
+    background:var(--danger);color:#fff;box-shadow:0 16px 34px rgba(189,74,67,.22);margin-bottom:22px;
+  }
+  .urgent-badge .icon{width:38px;height:38px;stroke-width:1.5}
+  .urgent h2{margin:0 0 14px;font-size:clamp(28px,3.4vw,40px);line-height:1.25}
+  .urgent h2 small{display:block;font-size:13px;letter-spacing:.18em;color:var(--danger);font-weight:700;margin-bottom:10px}
+  .urgent-lead{color:var(--ink-soft);font-size:16px;margin:0}
+  .danger-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .danger-list li{
+    display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #f0d9d5;
+    border-radius:14px;padding:14px 16px;font-size:14px;font-weight:600;color:var(--ink-soft);
+  }
+  .danger-list li .icon{width:20px;height:20px;color:var(--danger)}
+  .risk-note{
+    grid-column:1/-1;margin-top:6px;padding:16px 18px;border-radius:14px;
+    background:var(--danger-bg);border:1px solid #f0d9d5;color:#8d433e;font-size:13px;
+  }
+
+  /* ---------- quiz ---------- */
+  .quiz{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+  .quiz::before{
+    content:"";position:absolute;width:460px;height:460px;border-radius:50%;
+    border:1px solid rgba(186,156,102,.18);right:-160px;top:-180px;
+  }
+  .quiz .wrap{position:relative;z-index:1}
+  .quiz .section-head h2{color:#fff}
+  .quiz .section-head p{color:#b8cbd4}
+  .quiz-shell{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
+    border-radius:26px;padding:clamp(22px,4vw,40px);max-width:820px;margin-inline:auto;
+    backdrop-filter:blur(8px);
+  }
+  .quiz-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+  .quiz-progress-label{font-size:13px;color:#c5d6dd;letter-spacing:.06em}
+  .quiz-progress-label b{color:#e8c98d;font-size:16px}
+  .progress-track{width:150px;height:6px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
+  .progress-fill{height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .4s ease}
+  .q-type{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;
+    color:#e8c98d;border:1px solid rgba(232,201,141,.5);padding:4px 11px;border-radius:999px;margin-bottom:14px;
+  }
+  .q-title{font-size:clamp(19px,2.4vw,26px);line-height:1.5;margin:0 0 24px;font-weight:700}
+  .options{display:grid;gap:11px}
+  .option{
+    width:100%;text-align:left;display:flex;align-items:center;gap:14px;
+    padding:15px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.05);color:#fff;font-size:15px;transition:.2s;
+  }
+  .option:hover:not(:disabled){border-color:var(--gold);background:rgba(232,201,141,.12);transform:translateX(3px)}
+  .option .key{
+    width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;
+    background:rgba(255,255,255,.12);font-weight:700;font-size:13px;
+  }
+  .option.correct{border-color:#74d3ab;background:rgba(44,138,110,.28)}
+  .option.correct .key{background:var(--ok);color:#fff}
+  .option.wrong{border-color:#f0928c;background:rgba(189,74,67,.24)}
+  .option.wrong .key{background:var(--danger);color:#fff}
+  .option:disabled{cursor:default;opacity:.92}
+  .feedback{
+    margin-top:20px;border-radius:14px;padding:16px 18px;font-size:14px;
+    display:none;line-height:1.7;
+  }
+  .feedback.show{display:block;animation:fadeUp .35s ease}
+  .feedback.good{background:var(--ok-bg);color:#1f5f4c;border-left:4px solid var(--ok)}
+  .feedback.bad{background:var(--danger-bg);color:#8d433e;border-left:4px solid var(--danger)}
+  .feedback b{display:block;margin-bottom:3px;font-size:15px}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:22px;min-height:46px}
+  .quiz-footer .btn-gold{visibility:hidden}
+  .quiz-footer .btn-gold.show{visibility:visible;animation:fadeUp .3s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .result{text-align:center;padding:12px 0 4px;display:none}
+  .result.show{display:block;animation:fadeUp .4s ease}
+  .result-score{font-size:clamp(56px,9vw,86px);font-weight:800;line-height:1;color:#e8c98d;letter-spacing:-.04em}
+  .result-score small{font-size:.32em;color:#b8cbd4;font-weight:500;letter-spacing:0}
+  .result h3{margin:14px 0 6px;font-size:24px}
+  .result p{color:#bfd0d7;margin:0 auto 22px;max-width:460px;font-size:15px}
+  .review{text-align:left;margin:24px 0 26px;display:grid;gap:8px}
+  .review-item{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.05);border-radius:10px;padding:10px 14px;font-size:13px;color:#d3e0e6}
+  .review-item span{font-weight:800;flex:none}
+  .review-item.ok span{color:#7ad4ae}
+  .review-item.no span{color:#f3a19b}
+
+  /* ---------- mobile app shell ---------- */
+  .install-btn{display:none}
+  .install-btn.show{display:inline-flex}
+  .bottom-nav{display:none}
+  .app-tip{
+    display:none;margin-top:12px;font-size:12px;color:#e8c98d;
+    background:rgba(0,0,0,.18);padding:9px 12px;border-radius:10px;
+  }
+  .app-tip.show{display:block}
+
+  /* ---------- footer ---------- */
+  .site-footer{background:#0f232f;color:#c3d2d9;padding:70px 0 30px;text-align:center}
+  .thanks{font-size:clamp(34px,6vw,64px);font-weight:800;letter-spacing:.02em;color:#fff;margin:0 0 8px;line-height:1.1}
+  .thanks span{color:var(--gold)}
+  .footer-sub{margin:0 0 34px;color:#8ea6b1;font-size:14px}
+  .member-row{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:38px}
+  .member{
+    border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 18px;
+    font-size:13px;background:rgba(255,255,255,.04);
+  }
+  .member b{color:#e8c98d;font-weight:600;margin-left:6px}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:22px;font-size:12px;color:#77929e}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:960px){
+    body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+    .hero-inner{grid-template-columns:1fr;gap:44px;padding-top:72px}
+    .hero-visual{max-width:560px}
+    .visual-card.offset,.visual-card.offset2{margin-left:0}
+    .floating-pill{left:12px;top:-30px}
+    .goal-grid{grid-template-columns:repeat(2,1fr)}
+    .flu-grid,.urgent-grid{grid-template-columns:1fr}
+    .prev-grid{grid-template-columns:repeat(2,1fr)}
+    .nav,.menu-btn{display:none}
+    .bottom-nav{
+      display:grid;position:fixed;left:0;right:0;bottom:0;z-index:60;
+      grid-template-columns:repeat(4,1fr);
+      background:rgba(255,255,255,.96);backdrop-filter:blur(14px);
+      border-top:1px solid var(--line);
+      padding:7px 6px calc(7px + env(safe-area-inset-bottom));
+      box-shadow:0 -8px 26px rgba(23,48,66,.09);
+    }
+    .bottom-nav a{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+      padding:6px 2px;border-radius:12px;font-size:11px;font-weight:600;color:var(--muted);
+    }
+    .bottom-nav a .icon{width:22px;height:22px}
+    .bottom-nav a.active{color:var(--teal);background:#eaf3f2}
+    .site-footer{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+  }
+  @media (max-width:620px){
+    .wrap{width:min(calc(100% - 28px),var(--max))}
+    .goal-grid,.prev-grid,.symptom-grid,.danger-list{grid-template-columns:1fr}
+    .symptom-grid{grid-template-columns:repeat(2,1fr)}
+    .hero h1{font-size:38px}
+    .hero-actions .btn{width:100%}
+    .quiz-shell{padding:22px 18px}
+    .option{font-size:14px;padding:13px 14px}
+    .timer{padding:18px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG icon sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></symbol>
+  <symbol id="i-virus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/><path d="M12 10v4M10 12h4"/></symbol>
+  <symbol id="i-hands" viewBox="0 0 24 24"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V11M11 11V5.5a1.5 1.5 0 0 1 3 0V11M14 11V7a1.5 1.5 0 0 1 3 0v7c0 3.3-2.2 6-5.5 6S6 17.3 6 14v-1.5a1.5 1.5 0 0 1 3 0"/><path d="M4 7l2-3M20 7l-2-3"/></symbol>
+  <symbol id="i-mask" viewBox="0 0 24 24"><path d="M4 8c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v4c0 3.3-3.6 6-8 6s-8-2.7-8-6V8z"/><path d="M4 10H2M22 10h-2M9 12h6"/></symbol>
+  <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h8a3 3 0 1 1-3 3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4v-9z"/><path d="M9 20v-6h6v6"/></symbol>
+  <symbol id="i-syringe" viewBox="0 0 24 24"><path d="M14 4l6 6M17 7l-9 9-4 4M8 16l-2-2M11 13l-2-2M17 7l-2-2"/><path d="M5 19l-2 2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l9.5 17H2.5L12 3z"/><path d="M12 9v5M12 17h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5h6a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2.5H4V5zM20 5h-6a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2.5H20V5z"/></symbol>
+  <symbol id="i-fever" viewBox="0 0 24 24"><path d="M10 5a2 2 0 1 1 4 0v8a4 4 0 1 1-4 0V5z"/><path d="M12 9v7"/></symbol>
+  <symbol id="i-breath" viewBox="0 0 24 24"><path d="M3 12h4l2-5 3 10 3-13 2 8h4"/></symbol>
+  <symbol id="i-thirst" viewBox="0 0 24 24"><path d="M8 3h8l-1 6a3 3 0 0 1-3 2.5A3 3 0 0 1 9 9L8 3zM12 12v9M9 17h6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="回到首頁">
+      <span class="brand-mark"><svg class="icon"><use href="#i-shield"/></svg></span>
+      <span>健康守護計畫<small>HEALTH EDUCATION</small></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="主要導覽">
+      <a href="#goals">衛教目標</a>
+      <a href="#content">衛教內容</a>
+      <a href="#urgent">就醫時機</a>
+      <a href="#quiz">互動測驗</a>
+      <a class="nav-cta" href="#quiz">開始測驗</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="開啟選單" aria-expanded="false" aria-controls="nav">
+      <svg class="icon"><use href="#i-menu"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <span class="eyebrow">可回饋式衛教 · 第 1 組</span>
+        <h1><span>衛教主題</span>流感與呼吸道感染的預防</h1>
+        <p class="hero-lead">從傳播方式、日常防護到就醫時機，用五分鐘建立正確觀念，再透過互動測驗立即檢視學習成果。</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#content">開始閱讀 <svg class="icon"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost" href="#quiz">直接進入測驗</a>
+          <button class="btn btn-ghost install-btn" id="installBtn" type="button">安裝 App</button>
+        </div>
+        <p class="app-tip" id="appTip">在 iPhone / iPad 請點「分享」→「加入主畫面」；Android 請點瀏覽器選單 →「安裝應用程式」。</p>
+        <div class="hero-meta">
+          <span>組員：<b>11322218 周郡玲</b></span>
+          <span><b>11322256 黃鈺霖</b></span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="floating-pill">預防 <span>7</span> 招</div>
+        <div class="visual-card">
+          <span class="vis-icon"><svg class="icon"><use href="#i-hands"/></svg></span>
+          <div><strong>勤洗手 · 20 秒</strong><small>肥皂與清水，搓洗指尖與手背</small></div>
+        </div>
+        <div class="visual-card offset">
+          <span class="vis-icon"><svg class="icon"><use href="#i-mask"/></svg></span>
+          <div><strong>咳嗽禮節與口罩</strong><small>遮住口鼻，必要時適當佩戴</small></div>
+        </div>
+        <div class="visual-card offset2">
+          <span class="vis-icon"><svg class="icon"><use href="#i-syringe"/></svg></span>
+          <div><strong>接種流感疫苗</strong><small>降低感染與重症風險</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOALS -->
+  <section class="goals" id="goals">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">01 / Objectives</span>
+        <h2>衛教目標</h2>
+        <p>衛教後，民眾能夠：</p>
+      </div>
+      <div class="goal-grid">
+        <article class="goal-card reveal"><div class="goal-num">01</div><h3>認識傳播方式</h3><p>了解流感及常見呼吸道感染如何透過飛沫與分泌物傳播。</p></article>
+        <article class="goal-card reveal"><div class="goal-num">02</div><h3>說出預防方法</h3><p>能列舉至少 3 種預防呼吸道感染的具體做法。</p></article>
+        <article class="goal-card reveal"><div class="goal-num">03</div><h3>正確執行防護</h3><p>正確執行洗手、咳嗽禮節及口罩使用。</p></article>
+        <article class="goal-card reveal"><div class="goal-num">04</div><h3>辨識就醫警訊</h3><p>知道出現哪些症狀時應儘速尋求醫療協助。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLU INTRO -->
+  <section id="content">
+    <div class="wrap flu-grid">
+      <div class="flu-text reveal">
+        <span class="kicker">02 / What is flu</span>
+        <h2 style="margin:0 0 18px;font-size:clamp(28px,3.6vw,42px)">什麼是流感？</h2>
+        <p>流感是由<strong>流感病毒</strong>引起的急性呼吸道感染，主要透過感染者咳嗽、打噴嚏或說話產生的<strong>飛沫及呼吸道分泌物</strong>傳播。</p>
+        <div class="callout">常見症狀包括發燒、頭痛、咳嗽、肌肉痠痛、喉嚨痛、疲倦倦怠，以及鼻塞、流鼻水。</div>
+      </div>
+      <div class="symptom-panel reveal">
+        <h3>常見症狀</h3>
+        <p class="sub">出現以下症狀時，請留意自身狀況並與他人保持距離。</p>
+        <div class="symptom-grid">
+          <div class="symptom"><svg class="icon"><use href="#i-fever"/></svg>發燒</div>
+          <div class="symptom"><svg class="icon"><use href="#i-virus"/></svg>頭痛</div>
+          <div class="symptom"><svg class="icon"><use href="#i-breath"/></svg>咳嗽</div>
+          <div class="symptom"><svg class="icon"><use href="#i-alert"/></svg>肌肉痠痛</div>
+          <div class="symptom"><svg class="icon"><use href="#i-thirst"/></svg>喉嚨痛</div>
+          <div class="symptom"><svg class="icon"><use href="#i-clock"/></svg>疲倦倦怠</div>
+          <div class="symptom"><svg class="icon"><use href="#i-wind"/></svg>鼻塞</div>
+          <div class="symptom"><svg class="icon"><use href="#i-eye"/></svg>流鼻水</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREVENTION -->
+  <section class="prevention" id="prevention">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">03 / Prevention</span>
+        <h2>如何預防？</h2>
+        <p>七個日常防護重點，從個人習慣到環境與疫苗，建立完整防護網。</p>
+      </div>
+      <div class="prev-grid">
+        <article class="prev-card reveal">
+          <div class="prev-top"><span class="prev-icon"><svg class="icon"><use href="#i-hands"/></svg></span><span class="prev-index">01</span></div>
+          <h3>勤洗手</h3>
+          <p>使用肥皂及清水洗手，搓洗約 20 秒。吃東西前、飯後、接觸公共場所物品後、摸眼鼻口前、咳嗽或打噴嚏後都應洗手。</p>
+          <span class="tag">20 秒</span>
+        </article>
+        <article class="prev-card reveal">
+          <div class="prev-top"><span class="prev-icon"><svg class="icon"><use href="#i-mask"/></svg></span><span class="prev-index">02</span></div>
+          <h3>咳嗽禮節</h3>
+          <p>咳嗽或打噴嚏時用衛生紙遮住口鼻，使用過的衛生紙立即丟棄；沒有衛生紙時用衣袖遮住，隨後洗手。</p>
+          <span class="tag">遮口鼻</span>
+        </article>
+        <article class="prev-card reveal">
+          <div class="prev-top"><span class="prev-icon"><svg class="icon"><use href="#i-mask"/></svg></span><span class="prev-index">03</span></div>
+          <h3>適當佩戴口罩</h3>
+          <p>在呼吸道感染流行期間、進入醫療院所或人潮密集場所時，可依當時防疫建議佩戴口罩。</p>
+          <span class="tag">人多時</span>
+        </article>
+        <article class="prev-card reveal">
+          <div class="prev-top"><span class="prev-icon"><svg class="icon"><use href="#i-wind"/></svg></span><span class="prev-index">04</span></div>
+          <h3>保持室內通風</h3>
+          <p>適當開窗通風，降低呼吸道病原體在室內累積的機會。</p>
+          <span class="tag">開窗</span>
+        </article>
+        <article class="prev-card reveal">
+          <div class="prev-top"><span class="prev-icon"><svg class="icon"><use href="#i-eye"/></svg></span><span class="prev-index">05</span></div>
+          <h3>避免接觸眼、鼻、口</h3>
+          <p>手部可能沾附病原體，應避免用未清潔的手觸摸臉部。</p>
+          <span class="tag">別摸臉</span>
+        </article>
+        <article class="prev-card reveal">
+          <div class="prev-top"><span class="prev-icon"><svg class="icon"><use href="#i-home"/></svg></span><span class="prev-index">06</span></div>
+          <h3>生病時減少外出</h3>
+          <p>出現發燒、咳嗽等呼吸道症狀時，應適度休息，避免前往人多的地方，並依需要就醫。</p>
+          <span class="tag">在家休息</span>
+        </article>
+        <article class="prev-card reveal">
+          <div class="prev-top"><span class="prev-icon"><svg class="icon"><use href="#i-syringe"/></svg></span><span class="prev-index">07</span></div>
+          <h3>接種流感疫苗</h3>
+          <p>流感疫苗是預防流感及降低重症風險的重要措施之一，符合公費接種資格者可依當年度衛生福利部疾病管制署公告接種。</p>
+          <span class="tag">每年接種</span>
+        </article>
+      </div>
+
+      <div class="timer reveal">
+        <div class="timer-ring" id="timerRing"><span id="timerNum">20</span></div>
+        <div class="timer-copy">
+          <h3>洗手 20 秒小計時器</h3>
+          <p id="timerText">按下開始，跟著計時搓洗手心、手背、指縫與指尖。</p>
+        </div>
+        <button class="btn btn-dark" id="timerBtn">開始計時</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- URGENT -->
+  <section class="urgent" id="urgent">
+    <div class="wrap urgent-grid">
+      <div class="reveal">
+        <div class="urgent-badge"><svg class="icon"><use href="#i-alert"/></svg></div>
+        <h2><small>04 / When to seek care</small>何種情況需就醫</h2>
+        <p class="urgent-lead">若出現以下情況，應儘速尋求醫療協助。</p>
+      </div>
+      <ul class="danger-list reveal">
+        <li><svg class="icon"><use href="#i-breath"/></svg>呼吸困難或喘</li>
+        <li><svg class="icon"><use href="#i-alert"/></svg>胸痛</li>
+        <li><svg class="icon"><use href="#i-eye"/></svg>意識改變或明顯嗜睡</li>
+        <li><svg class="icon"><use href="#i-fever"/></svg>持續高燒或症狀明顯惡化</li>
+        <li><svg class="icon"><use href="#i-thirst"/></svg>嚴重脫水</li>
+        <li><svg class="icon"><use href="#i-virus"/></svg>原有慢性疾病明顯惡化</li>
+        <li class="risk-note"><svg class="icon" style="width:18px;height:18px"><use href="#i-shield"/></svg>幼兒、老人、孕婦及慢性疾病患者等較容易發生併發症的族群，更需要注意症狀變化。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="quiz" id="quiz">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">05 / Feedback Quiz</span>
+        <h2>可回饋式測驗</h2>
+        <p>五題小測驗，選完立即給你回饋與說明。看看你學會了多少！</p>
+      </div>
+
+      <div class="quiz-shell reveal">
+        <div id="quizPlay">
+          <div class="quiz-top">
+            <span class="quiz-progress-label">第 <b id="qIndex">1</b> / 5 題　·　得分 <b id="qScore">0</b></span>
+            <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="qProgress"></div></div>
+          </div>
+          <span class="q-type" id="qType">選擇題</span>
+          <h3 class="q-title" id="qTitle"></h3>
+          <div class="options" id="qOptions" role="group" aria-label="答案選項"></div>
+          <div class="feedback" id="qFeedback" aria-live="polite"></div>
+          <div class="quiz-footer">
+            <button class="btn btn-gold" id="qNext">下一題 <svg class="icon"><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+
+        <div class="result" id="qResult" aria-live="polite">
+          <div class="result-score" id="rScore">0<small> / 5</small></div>
+          <h3 id="rTitle">測驗完成！</h3>
+          <p id="rText"></p>
+          <div class="review" id="rReview"></div>
+          <button class="btn btn-gold" id="rRestart">再測一次</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav" aria-label="App 底部導覽">
+  <a href="#top" class="active"><svg class="icon"><use href="#i-home"/></svg>首頁</a>
+  <a href="#content"><svg class="icon"><use href="#i-book"/></svg>衛教</a>
+  <a href="#urgent"><svg class="icon"><use href="#i-alert"/></svg>就醫</a>
+  <a href="#quiz"><svg class="icon"><use href="#i-check"/></svg>測驗</a>
+</nav>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="thanks">THANK <span>YOU!</span></p>
+    <p class="footer-sub">流感與呼吸道感染的預防 · 可回饋式衛教</p>
+    <div class="member-row">
+      <span class="member">11322218 <b>周郡玲</b></span>
+      <span class="member">11322256 <b>黃鈺霖</b></span>
+    </div>
+    <div class="footer-bottom">內容改編自簡報檔「index.html.pptx」 · 本網頁僅供衛教學習使用</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- mobile menu ---------- */
+  var menuBtn = document.getElementById('menuBtn');
+  var nav = document.getElementById('nav');
+  menuBtn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+  });
+  nav.addEventListener('click', function(e){
+    if(e.target.closest('a')){
+      nav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded','false');
+    }
+  });
+
+  /* ---------- scroll reveal ---------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    },{threshold:.12});
+    reveals.forEach(function(el, i){
+      el.style.transitionDelay = (Math.min(i % 4, 3) * 70) + 'ms';
+      io.observe(el);
+    });
+  }else{
+    reveals.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- hand-washing timer ---------- */
+  var timerBtn = document.getElementById('timerBtn');
+  var timerNum = document.getElementById('timerNum');
+  var timerRing = document.getElementById('timerRing');
+  var timerText = document.getElementById('timerText');
+  var timerId = null;
+  function setTimerUI(left){
+    timerNum.textContent = left;
+    timerRing.style.setProperty('--p', ((20-left)/20*100).toFixed(1));
+  }
+  timerBtn.addEventListener('click', function(){
+    if(timerId !== null){
+      clearInterval(timerId); timerId = null;
+      timerBtn.textContent = '開始計時';
+      setTimerUI(20);
+      timerText.textContent = '已重置。按下開始，跟著計時搓洗手心、手背、指縫與指尖。';
+      return;
+    }
+    var left = 20;
+    timerBtn.textContent = '重置';
+    timerText.textContent = '搓洗中… 手心、手背、指縫、指尖都要洗到。';
+    setTimerUI(left);
+    timerId = setInterval(function(){
+      left--;
+      setTimerUI(Math.max(left,0));
+      if(left <= 0){
+        clearInterval(timerId); timerId = null;
+        timerBtn.textContent = '再洗一次';
+        timerText.textContent = '完成！記得沖洗並擦乾雙手。';
+      }
+    },1000);
+  });
+
+  /* ---------- quiz ---------- */
+  var questions = [
+    {
+      type:'choice',
+      q:'下列哪一項是預防呼吸道感染的重要方法？',
+      options:['不需要洗手','勤洗手','咳嗽時用手掌摀嘴','生病時仍到人多的地方'],
+      answer:1,
+      why:'勤洗手（用肥皂與清水搓洗約 20 秒）可有效移除手部病原體。'
+    },
+    {
+      type:'choice',
+      q:'咳嗽或打噴嚏時，最適當的做法是？',
+      options:['用手直接摀住嘴巴','不需要遮掩','用衛生紙或衣袖遮住口鼻','朝旁邊的人咳嗽'],
+      answer:2,
+      why:'用衛生紙或衣袖遮住口鼻，使用過的衛生紙立即丟棄並洗手。'
+    },
+    {
+      type:'choice',
+      q:'下列何者屬於需要特別注意流感併發症的族群？',
+      options:['高齡者','幼兒','孕婦','以上皆是'],
+      answer:3,
+      why:'幼兒、老人、孕婦及慢性疾病患者等較容易發生併發症。'
+    },
+    {
+      type:'bool',
+      q:'流感患者即使有明顯症狀，也應照常到人多的地方活動。',
+      options:['對','錯'],
+      answer:1,
+      why:'有呼吸道症狀時應適度休息並減少與他人接觸，以降低疾病傳播機會。'
+    },
+    {
+      type:'bool',
+      q:'保持室內適當通風，有助於降低呼吸道感染傳播的風險。',
+      options:['對','錯'],
+      answer:0,
+      why:'開窗通風可降低呼吸道病原體在室內累積的機會。'
+    }
+  ];
+
+  var cur = 0, score = 0, answered = false;
+  var review = [];
+  var elIndex = document.getElementById('qIndex');
+  var elScore = document.getElementById('qScore');
+  var elProgress = document.getElementById('qProgress');
+  var elType = document.getElementById('qType');
+  var elTitle = document.getElementById('qTitle');
+  var elOptions = document.getElementById('qOptions');
+  var elFeedback = document.getElementById('qFeedback');
+  var btnNext = document.getElementById('qNext');
+  var play = document.getElementById('quizPlay');
+  var result = document.getElementById('qResult');
+
+  function renderQuestion(){
+    var item = questions[cur];
+    answered = false;
+    elIndex.textContent = cur + 1;
+    elScore.textContent = score;
+    elProgress.style.width = (cur / questions.length * 100) + '%';
+    elType.textContent = item.type === 'bool' ? '是非題' : '選擇題';
+    elTitle.textContent = 'Q' + (cur+1) + '. ' + item.q;
+    elFeedback.className = 'feedback';
+    elFeedback.textContent = '';
+    btnNext.classList.remove('show');
+    elOptions.innerHTML = '';
+
+    item.options.forEach(function(text, i){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option';
+      var key = document.createElement('span');
+      key.className = 'key';
+      key.textContent = item.type === 'bool' ? (i === 0 ? '○' : '×') : String.fromCharCode(65+i);
+      var label = document.createElement('span');
+      label.textContent = text;
+      btn.appendChild(key);
+      btn.appendChild(label);
+      btn.addEventListener('click', function(){ choose(i); });
+      elOptions.appendChild(btn);
+    });
+  }
+
+  function choose(pick){
+    if(answered) return;
+    answered = true;
+    var item = questions[cur];
+    var isRight = pick === item.answer;
+    if(isRight) score++;
+
+    Array.prototype.forEach.call(elOptions.children, function(btn, i){
+      btn.disabled = true;
+      if(i === item.answer) btn.classList.add('correct');
+      else if(i === pick) btn.classList.add('wrong');
+    });
+
+    elScore.textContent = score;
+    elFeedback.className = 'feedback show ' + (isRight ? 'good' : 'bad');
+    elFeedback.innerHTML = '<b>' + (isRight ? '✓ 答對了！' : '✕ 答錯了，正確答案是 ' + (item.type === 'bool' ? (item.answer === 0 ? '○ 對' : '× 錯') : String.fromCharCode(65+item.answer))) + '</b>' + item.why;
+    btnNext.classList.add('show');
+    btnNext.firstChild.textContent = cur === questions.length - 1 ? '查看結果 ' : '下一題 ';
+    review.push({num:cur+1, ok:isRight, q:item.q, why:item.why});
+  }
+
+  btnNext.addEventListener('click', function(){
+    if(!answered) return;
+    if(cur < questions.length - 1){
+      cur++;
+      renderQuestion();
+      document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+    }else{
+      showResult();
+    }
+  });
+
+  function showResult(){
+    play.style.display = 'none';
+    result.classList.add('show');
+    document.getElementById('rScore').innerHTML = score + '<small> / ' + questions.length + '</small>';
+    document.getElementById('rTitle').textContent =
+      score === 5 ? '滿分！你已經完全掌握了 🎉' :
+      score >= 3 ? '做得不錯！再複習一下細節 👏' : '再讀一次內容，然後挑戰滿分 💪';
+    document.getElementById('rText').textContent =
+      '你答對了 ' + score + ' 題。記得：勤洗手、咳嗽禮節、必要時戴口罩、保持通風、生病在家休息，並依資格接種流感疫苗。';
+
+    var box = document.getElementById('rReview');
+    box.innerHTML = '';
+    review.forEach(function(r){
+      var row = document.createElement('div');
+      row.className = 'review-item ' + (r.ok ? 'ok' : 'no');
+      var mark = document.createElement('span');
+      mark.textContent = r.ok ? '✓' : '✕';
+      var txt = document.createElement('div');
+      txt.textContent = 'Q' + r.num + ' ' + r.q + '　→　' + r.why;
+      row.appendChild(mark);
+      row.appendChild(txt);
+      box.appendChild(row);
+    });
+    result.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  document.getElementById('rRestart').addEventListener('click', function(){
+    cur = 0; score = 0; review = [];
+    result.classList.remove('show');
+    play.style.display = 'block';
+    renderQuestion();
+    play.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  renderQuestion();
+
+  /* ---------- PWA: install + offline ---------- */
+  var installBtn = document.getElementById('installBtn');
+  var appTip = document.getElementById('appTip');
+  var deferredPrompt = null;
+  var iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+
+  if(!standalone && iOS){
+    installBtn.classList.add('show');
+  }
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.classList.add('show');
+  });
+  installBtn.addEventListener('click', function(){
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(){
+        deferredPrompt = null;
+        installBtn.classList.remove('show');
+      });
+    }else{
+      appTip.classList.toggle('show');
+    }
+  });
+  window.addEventListener('appinstalled', function(){
+    installBtn.classList.remove('show');
+    appTip.classList.remove('show');
+  });
+
+  if('serviceWorker' in navigator && location.protocol !== 'file:'){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+
+  /* ---------- bottom nav active state ---------- */
+  var bottomLinks = document.querySelectorAll('.bottom-nav a');
+  var targets = [
+    document.getElementById('top'),
+    document.getElementById('content'),
+    document.getElementById('urgent'),
+    document.getElementById('quiz')
+  ];
+  function updateBottomNav(){
+    var pos = window.scrollY + Math.min(window.innerHeight * .35, 280);
+    var active = 0;
+    targets.forEach(function(section, i){
+      if(section && section.offsetTop <= pos) active = i;
+    });
+    bottomLinks.forEach(function(link, i){
+      link.classList.toggle('active', i === active);
+    });
+  }
+  window.addEventListener('scroll', updateBottomNav, {passive:true});
+  window.addEventListener('resize', updateBottomNav);
+  updateBottomNav();
+})();
+</script>
+</body>
+</html>
